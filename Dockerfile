@@ -16,7 +16,7 @@ RUN python3 -m virtualenv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 # install package
-COPY pyproject.toml .
+COPY . .
 RUN pip install --upgrade pip
 RUN pip install . -v
 RUN pip list -v
