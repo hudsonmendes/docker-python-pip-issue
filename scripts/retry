@@ -1,6 +1,10 @@
 #!/bin/bash
 
 echo "Building docker image for $1"
+echo "#==============================================================================#"
 docker images | awk '{print $3}'  | xargs docker rmi -f
-docker build . -t your_project_name:$1 --progress plain --file Dockerfile.$1
-docker run --rm -p 8080:8080 docker.io/library/your_project_name:$1
+echo "#==============================================================================#"
+docker build . -t your_project_container:$1 --progress plain --file Dockerfile.$1
+echo "#==============================================================================#"
+docker run --rm -p 8080:8080 docker.io/library/your_project_container:$1
+echo "#==============================================================================#"
