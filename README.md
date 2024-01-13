@@ -4,11 +4,25 @@ The code in the following repo has the following problem:
 
 - If you run  `pip install .` and `python -c "import your_project_name"` it works just fine
 
-- If you do a `docker build . -t your_project_container` and `docker run --rm your_project_container` it fails, see error message.
+- If you do a `docker build . -t your_project_container` and `docker run --rm your_project_container` it fails, see the **Error Message** section.
+
+## Helper Script
+
+To help me run the test (image cleaning, build and run), I'm using the following script:
+
+```shell
+scripts/retry ubuntu
+```
+
+OR
+
+```shell
+scripts/retry rhel8
+```
 
 ## Error Message
 
-```
+```log
 2024-01-13 09:38:21 Traceback (most recent call last):
 2024-01-13 09:38:21   File "/usr/lib64/python3.8/runpy.py", line 194, in _run_module_as_main
 2024-01-13 09:38:21     return _run_code(code, main_globals, None,
@@ -58,14 +72,14 @@ The code in the following repo has the following problem:
 
 The following code in the Dockerfile `CMD`:
 
-```
+```Dockerfile
 echo $PYTHONPATH
 python -c "import sys; print(sys.path)"
 python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])"
 ```
 
 results in the following **echo**:
-```
+```log
 2024-01-13 09:38:20 /opt/venv/lib/python3.8/site-packages:/opt/venv/lib64/python3.8/site-packages:
 2024-01-13 09:38:20 /opt/venv/lib/python3.8/site-packages
 2024-01-13 09:38:20 ['', '/opt/venv/lib/python3.8/site-packages', '/opt/venv/lib64/python3.8/site-packages', '/var/api', '/usr/lib64/python38.zip', '/usr/lib64/python3.8', '/usr/lib64/python3.8/lib-dynload']

@@ -2,7 +2,7 @@
 
 echo "Building docker image for $1"
 echo "#==============================================================================#"
-docker images | awk '{print $3}'  | xargs docker rmi -f
+docker images | grep your_project_container | awk '{print $3}' | xargs docker rmi -f
 echo "#==============================================================================#"
 docker build . -t your_project_container:$1 --progress plain --file Dockerfile.$1
 echo "#==============================================================================#"
