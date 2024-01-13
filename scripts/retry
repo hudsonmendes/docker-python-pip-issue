@@ -6,5 +6,5 @@ docker images | grep your_project_container | awk '{print $3}' | xargs docker rm
 echo "#==============================================================================#"
 docker build . -t your_project_container:$1 --progress plain --file Dockerfile.$1
 echo "#==============================================================================#"
-docker run --rm -p 8080:8080 docker.io/library/your_project_container:$1
+docker run -it --rm -p 8080:8080 docker.io/library/your_project_container:$1
 echo "#==============================================================================#"

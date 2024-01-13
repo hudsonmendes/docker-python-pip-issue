@@ -53,4 +53,4 @@ EXPOSE 8080
 
 CMD python -c "import sys; print(sys.path)" & \
     python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])" & \
-    python -m uvicorn your_package_name.server:app --host 0.0.0.0 --port 8080
+    python -m uvicorn your_project_name.server:app --host 0.0.0.0 --port 8080
