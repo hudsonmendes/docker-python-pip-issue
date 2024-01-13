@@ -1,0 +1,42 @@
+# use redhat-rhel8 as base image
+FROM ubuntu:latest
+
+# install version selector
+RUN apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata
+RUN apt-get install -y \
+    git make build-essential libssl-dev zlib1g-dev \
+    libbz2-dev libreadline-dev libsqlite3-dev \
+    wget curl llvm libncurses5-dev libncursesw5-dev \
+    xz-utils tk-dev libffi-dev liblzma-dev
+RUN curl https://pyenv.run | bash
+ENV PYENV_ROOT="$HOME/.pyenv"
+ENV PATH="$PYENV_ROOT/bin:$PATH"
+RUN eval "$(pyenv init -)"
+RUN eval "$(pyenv virtualenv-init -)"
+RUN which pyenv
+
+# installing runtime
+ENV PYTHON_VERSION=3.8.6
+RUN pyenv install -v $PYTHON_VERSION
+RUN pyenv global $PYTHON_VERSION
+RUN which python
+RUN which pip
+
+# setup working directory
+ENV API_HOME=/var/api
+WORKDIR $API_HOME
+
+# install package
+COPY . .
+RUN pip install . -v
+RUN pip list -v
+
+# copy source code
+COPY . .
+
+EXPOSE 8080
+
+CMD python -c "import sys; print(sys.path)" & \
+    python -c "import sysconfig; print(sysconfig.get_paths()['purelib'])" & \
+    python -m uvicorn your_package_name.server:app --host 0.0.0.0 --port 8080

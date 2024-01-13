@@ -1,0 +1,4 @@
+./build
+./venv
+./scripts
+./src/*.egg-info
